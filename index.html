@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentine Confession</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #ffe6f0 0%, #ffb3d6 50%, #ff8ab3 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #3c1a33;
+    }
+
+    .card {
+      width: min(540px, 90vw);
+      padding: 28px;
+      border-radius: 28px;
+      box-shadow: 0 24px 60px rgba(115, 35, 81, 0.25);
+      background: rgba(255, 255, 255, 0.95);
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: 0.03em;
+    }
+
+    p {
+      margin: 0 0 20px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .button-area {
+      position: relative;
+      min-height: 180px;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 999px;
+      padding: 16px 28px;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 14px 30px rgba(204, 43, 135, 0.18);
+    }
+
+    #yesBtn {
+      background: linear-gradient(135deg, #ff7bb3 0%, #ff3f8e 100%);
+      color: white;
+      position: absolute;
+      left: 50%;
+      top: 30px;
+      transform: translateX(-50%) scale(1);
+    }
+
+    #noBtn {
+      background: #fff;
+      color: #d12c5e;
+      border: 2px solid #d12c5e;
+      position: absolute;
+      left: 50%;
+      top: 110px;
+      transform: translateX(-50%);
+    }
+
+    #noBtn:hover,
+    #yesBtn:hover {
+      transform: scale(1.05);
+    }
+
+    #result-image {
+      width: 100%;
+      max-width: 320px;
+      margin: 24px auto 0;
+      border-radius: 22px;
+      display: none;
+      border: 3px solid #ff9bc0;
+    }
+
+    .hint {
+      margin-top: 16px;
+      font-size: 0.95rem;
+      color: #8a4f6f;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Can I be your valentine?</h1>
+    <p id="message">Choose your answer. Just one chance for me, please.</p>
+
+    <div class="button-area" id="buttonArea">
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
+
+    <img id="result-image" src="cat.jpg" alt="luv you" />
+    <p class="hint">i luv youuuu.</p>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const message = document.getElementById('message');
+    const resultImage = document.getElementById('result-image');
+    const buttonArea = document.getElementById('buttonArea');
+
+    let noClicks = 0;
+    let yesScale = 1;
+    let finished = false;
+
+    function getRandomPosition() {
+      const rect = buttonArea.getBoundingClientRect();
+      const x = Math.random() * (rect.width - noBtn.offsetWidth);
+      const y = Math.random() * (rect.height - noBtn.offsetHeight);
+      return { x, y };
+    }
+
+    noBtn.addEventListener('click', () => {
+      if (finished) return;
+      noClicks += 1;
+      yesScale += 0.18;
+      yesBtn.style.transform = `translateX(-50%) scale(${yesScale.toFixed(2)})`;
+      message.textContent = 'Please give me a chance. Just one chance!';
+
+      const { x, y } = getRandomPosition();
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+      noBtn.style.transform = 'none';
+    });
+
+    yesBtn.addEventListener('click', () => {
+      if (finished) return;
+      finished = true;
+      message.textContent = 'Yeyyyy, luv you! 💖';
+      yesBtn.textContent = 'Yay!';
+      noBtn.textContent = 'Okay...';
+      resultImage.style.display = 'block';
+      noBtn.disabled = true;
+      noBtn.style.cursor = 'default';
+      yesBtn.style.boxShadow = '0 18px 40px rgba(255, 80, 150, 0.35)';
+    });
+  </script>
+</body>
+</html>
